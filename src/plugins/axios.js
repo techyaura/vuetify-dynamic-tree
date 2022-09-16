@@ -1,17 +1,9 @@
 import axios from 'axios'
 import Vue from 'vue'
 
-function createInstance(baseURL, options = {}) {
-  let config = {
+function createInstance(baseURL) {
+  const config = {
     baseURL,
-  }
-  if (options.token) {
-    config = {
-      ...config,
-      headers: {
-        Authorization: `Bearer ${options.token}`,
-      },
-    }
   }
 
   return axios.create(config)

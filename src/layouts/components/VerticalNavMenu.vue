@@ -1,11 +1,28 @@
 <template>
-  <v-navigation-drawer :value="isDrawerOpen" app floating width="260" class="app-navigation-menu" :right="$vuetify.rtl"
-    @input="val => $emit('update:is-drawer-open', val)">
+  <v-navigation-drawer
+    :value="isDrawerOpen"
+    app
+    floating
+    width="260"
+    class="app-navigation-menu"
+    :right="$vuetify.rtl"
+    @input="val => $emit('update:is-drawer-open', val)"
+  >
     <!-- Navigation Header -->
     <div class="vertical-nav-header d-flex items-center ps-6 pe-5 pt-5 pb-2">
-      <router-link to="/" class="d-flex align-center text-decoration-none">
-        <v-img :src="require('@/assets/images/logos/logo.svg')" max-height="30px" max-width="30px" alt="logo" contain
-          eager class="app-logo me-3"></v-img>
+      <router-link
+        to="/"
+        class="d-flex align-center text-decoration-none"
+      >
+        <v-img
+          :src="require('@/assets/images/logos/logo.svg')"
+          max-height="30px"
+          max-width="30px"
+          alt="logo"
+          contain
+          eager
+          class="app-logo me-3"
+        ></v-img>
         <v-slide-x-transition>
           <h2 class="app-title text--primary">
             MATERIO
@@ -13,10 +30,26 @@
         </v-slide-x-transition>
       </router-link>
     </div>
-    <div v-if="loading">Loading ...</div>
+    <div
+      v-if="loading"
+      class="pl-5"
+    >
+      Loading ...
+    </div>
     <div v-if="navData.length && !loading">
-      <v-treeview ref="tree" root dense expand-all :items="navData" :open.sync="openIds" :active.sync="activeIds"
-        item-key="id" activatable hoverable open-on-click>
+      <v-treeview
+        ref="tree"
+        root
+        dense
+        expand-all
+        :items="navData"
+        :open.sync="openIds"
+        :active.sync="activeIds"
+        item-key="id"
+        activatable
+        hoverable
+        open-on-click
+      >
         <template v-slot:prepend="{ item, open }">
           <v-icon v-if="item.children">
             {{ open ? icons.mdiFolderOpen : icons.mdiFolder }}
@@ -25,8 +58,15 @@
             {{ item.id }}
           </v-icon>
         </template>
-        <template slot="label" slot-scope="{ item }">
-          <v-icon v-if="!item.children" aria-label="File" aria-hidden="false">
+        <template
+          slot="label"
+          slot-scope="{ item }"
+        >
+          <v-icon
+            v-if="!item.children"
+            aria-label="File"
+            aria-hidden="false"
+          >
             {{ icons.mdiFile }}
           </v-icon>
           <a @click="navigate(item)">{{ item.name }}</a>
@@ -99,7 +139,7 @@ export default {
   },
   async mounted() {
     // fetch remote menu list
-    this.loading = true;
+    this.loading = true
     try {
       const navData = await this.fetchExploreMenu()
       const transformedNavData = transformNavData(navData)
@@ -110,9 +150,9 @@ export default {
 
       // assign the tree data
       this.navData = [...this.navData, ...transformedNavData]
-      this.loading = false;
+      this.loading = false
     } catch (error) {
-      this.loading = false;
+      this.loading = false
     }
   },
   created() {
@@ -130,9 +170,6 @@ export default {
       }
 
       return this.$router.push({ name: 'explorer', query: { active: item.id } }).catch(() => { })
-    },
-    selection(leafID) {
-      console.log(leafID, 'leafID')
     },
     async fetchExploreMenu() {
       const { data } = await this.$http.get('/explore/menu')
